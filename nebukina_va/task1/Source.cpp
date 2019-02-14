@@ -41,12 +41,15 @@ public:
 	int ConvTimeM(int h, int m, int s) // для вычитания???????????
 	{
 		if (m < -59)
-			m = 60 + (m & 60);
+			h = h + m / 60;
+			m = 60 + (m % 60);
 		if (h < -23)
-			h = 24 + (h % 24);		
+		{
+			h = 24 + (h % 24);
+			if ((h == 24) || (h == -24))
+				h = 0;
+		}
 		else h = -h;
-		if ((h == 24) || (h == -24))
-			h = 0;
 	}
 	void SetTime(int h, int m, int s) //1. установить время
 	{
