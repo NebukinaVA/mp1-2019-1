@@ -2,48 +2,85 @@
 #include <cstdlib>
 #include <cstdio>
 #include <ctime>
-#include <iosfwd>
+
+using namespace std;
 
 class Time
 {
 	int hrs;
 	int mins;
 	int secs;
+	int hr, mn, sc;
+	long long current;
 public:
-	void SetTime(int h, int m, int s) //1. установить время
+	int interpret(int h, int m, int s)  //РґР»СЏ в„–3
+	{
+		mn = m + s / 60;
+		s = s % 60;
+		m = mn % 60;
+		hr = h + m / 60;
+		h = hr % 24;		
+		return h, m, s;
+	}
+	int ConvTimeP(int h, int m, int s) // РґР»СЏ СЃР»РѕР¶РµРЅРёСЏ
+	{		
+		if (s > 59)
+		{
+			m = m + s / 60;
+			s = s % 60;
+		}
+		if (m > 59)
+		{
+			h = h + m / 60;
+			m = m % 60;			
+		}
+		if (h > 23)
+			h = h % 24;
+		return h, m, s;
+	}
+	int ConvTimeM(int h, int m, int s) // РґР»СЏ РІС‹С‡РёС‚Р°РЅРёСЏ???????????
+	{
+		if (m < -59)
+			m = 60 + (m & 60);
+		if (h < -23)
+			h = 24 + (h % 24);		
+		else h = -h;
+		if ((h == 24) || (h == -24))
+			h = 0;
+	}
+	void SetTime(int h, int m, int s) //1. СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РІСЂРµРјСЏ
 	{
 		hrs = h;
 		mins = m;
 		secs = s;
 	}
-	int GetTime(int h, int m, int s) // 2. узнать время
+	int GetTime(int h, int m, int s) // 2. СѓР·РЅР°С‚СЊ РІСЂРµРјСЏ
 	{
 		h = hrs;
 		m = mins;
 		s = secs;
 	}
-	void Diff(int h, int m, int s) //?? 3. узнать разницу между текущим и установленным
+	void Diff(int h, int m, int s) //?? 3. СѓР·РЅР°С‚СЊ СЂР°Р·РЅРёС†Сѓ РјРµР¶РґСѓ С‚РµРєСѓС‰РёРј Рё СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅС‹Рј
 	{
 		// tm* localtime(const time_t* timer);
-		h = hrs; 
-		m = mins;
-		s = secs;
+		current = *tm;
+
 	}
-	int ChangeTime(int h, int m, int s, char add) //4. изменить на заданное значение. add: + or -
+	int SubtractTime(int h, int m, int s) // РІС‹С‡РµСЃС‚СЊ Р·РЅР°С‡РµРЅРёРµ
 	{
-		if (add = '-') //уменьшить на заданное значение
-		{
-			h = -h;
-			m = -m;
-			s = -s;
-		}
+
+	}
+	int AddTime(int h, int m, int s) //4. РёР·РјРµРЅРёС‚СЊ РЅР° Р·Р°РґР°РЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ. add
+	{	
 		h = h + hrs;
 		m = m + mins;
 		s = s + secs;
 	}
 };
-void main()
+int main()
 {
 	int h, m, s;
-	char add;
+	int add; // 1 or 0
+	long long *tp;
+	time_t time(time_t *tp);
 }
