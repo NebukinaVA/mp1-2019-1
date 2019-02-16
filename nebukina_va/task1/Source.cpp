@@ -24,12 +24,23 @@ public:
 		mins = m;
 		secs = s;
 	}
-	void PrintTime(int (&cl)[3])
+	void PrintTime(int (&cl)[3]) // вывод значения
 	{
 		cout << cl[0] << " h ";
 		cout << cl[1] << " m ";
 		cout << cl[2] << " s";
 		cout << endl;
+	}
+	int EnterTime(int(&cl)[3]) // ввод значения
+	{
+		cout << "Hours: ";
+		cin >> cl[0];
+		cout << "Minutes: ";
+		cin >> cl[1];
+		cout << "Seconds: ";
+		cin >> cl[2];
+		cout << endl;
+		return cl[3];
 	}
 	int CalcTimeP(int (&cl)[3]) // для сложения
 	{
@@ -74,29 +85,29 @@ public:
 		cl[2] = s;
 		return cl[3];
 	}
-	void SetTime(int (&cl)[3]) //1. установить время
+	void SetTime(int (&cl)[3]) // установить время
 	{
 		hrs = cl[0];
 		mins = cl[1];
 		secs = cl[2];
 	}
-	int GetTime(int (&cl)[3]) // 2. узнать время
+	int GetTime(int (&cl)[3]) // узнать время
 	{
 		cl[0] = hrs;
 		cl[1] = mins;
 		cl[2] = secs;
 		return cl[3];
 	}
-	int DiffTime(int (&cl)[3]) // 3. узнать разницу между заданным и установленным
+	int DiffTime(int (&cl)[3]) // узнать разницу между заданным и установленным
 	{
 		cl[0] = abs(cl[0] - hrs);
 		cl[1] = abs(cl[1] - mins);
 		cl[2] = abs(cl[2] - secs);
 		return cl[3];
 	}
-	int ChangeTime(int (&cl)[3], int add) //4. изменить на заданное значение
+	int ChangeTime(int (&cl)[3], int add) // изменить на заданное значение
 	{
-		if (add = 1)
+		if (add == 1)
 		{
 			cl[0] = hrs - cl[0];
 			cl[1] = mins - cl[1];
@@ -109,7 +120,7 @@ public:
 			cl[2] = cl[2] + secs;
 		}
 		return cl[3];
-	}
+	}	
 };
 
 void main()
@@ -118,11 +129,9 @@ void main()
 	int h = clock[0];
 	int m = clock[1];
 	int s = clock[2];
-//	int hr, mn, sc;
 	int mode;
 	int add;
 	int i = 0;
-//	int &cl = clock[3];
 	Time t;
 	cout << "Time setted: 0 h 0 m 0 s.\n";
 	while (i == 0)
@@ -137,24 +146,12 @@ void main()
 		{
 		case 1:
 		{
-			cout << "Enter the time value you want to set.";
-			cout << "Hours: ";
-			cin >> clock[0];
-			cout << "Minutes: ";
-			cin >> clock[1];
-			cout << "Seconds: ";
-			cin >> clock[2];
-			cout << endl;
+			cout << "Enter the time value you want to set.\n";
+			t.EnterTime(clock);
 			while ((h < 0) || (h > 23) || (m < 0) || (m > 59) || (s < 0) || (s > 59))
 			{
 				cout << "Incorrect input. Try again.";
-				cout << "Hours: ";
-				cin >> clock[0];
-				cout << "Minutes: ";
-				cin >> clock[1];
-				cout << "Seconds: ";
-				cin >> clock[2];
-				cout << endl;
+				t.EnterTime(clock);
 			}
 			t.SetTime(clock);
 			break;
@@ -168,23 +165,11 @@ void main()
 		case 3:
 		{
 			cout << "Enter the time value you want to compare.\n";
-			cout << "Hours: ";
-			cin >> clock[0];
-			cout << "Minutes: ";
-			cin >> clock[1];
-			cout << "Seconds: ";
-			cin >> clock[2];
-			cout << endl;
+			t.EnterTime(clock);
 			while ((h < 0) || (h > 23) || (m < 0) || (m > 59) || (s < 0) || (s > 59))
 			{
 				cout << "Incorrect input. Try again.";
-				cout << "Hours: ";
-				cin >> clock[0];
-				cout << "Minutes: ";
-				cin >> clock[1];
-				cout << "Seconds: ";
-				cin >> clock[2];
-				cout << endl;
+				t.EnterTime(clock);
 			}
 			t.DiffTime(clock);
 			cout << "The difference is: ";
@@ -194,13 +179,7 @@ void main()
 		case 4:
 		{
 			cout << "Insert the time value you want to add or to subtract.\n";
-			cout << "Hours: ";
-			cin >> clock[0];
-			cout << "Minutes: ";
-			cin >> clock[1];
-			cout << "Seconds: ";
-			cin >> clock[2];
-			cout << endl;
+			t.EnterTime(clock);
 			cout << "Press 0 to add.\nPress 1 to subtract.\n";
 			cin >> add;
 			t.ChangeTime(clock, add);
