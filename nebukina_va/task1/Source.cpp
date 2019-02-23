@@ -18,7 +18,20 @@ public:
 		mins = 0;
 		secs = 0;
 	}
-	Time(int h, int m, int s) //h, m, s = 0, если не было введено новое значение
+	Time(int h, int m, int s)
+	{
+		hrs = h;
+		mins = m;
+		secs = s;
+	}
+	Time& operator=(const Time &t)
+	{
+		hrs = t.hrs;
+		mins = t.mins;
+		secs = t.secs;
+		return *this;
+	}
+	void SetTime(int h, int m, int s)
 	{
 		hrs = h;
 		mins = m;
@@ -31,50 +44,71 @@ public:
 		cout << secs << " s";
 		cout << endl;
 	}
-	void DiffTime(int h, int m, int s) // узнать разницу между заданным и установленным
+	Time DiffTime(Time t) // узнать разницу между заданным и установленным
 	{
-		hrs = abs(h - hrs);
-		mins = abs(m - mins);
-		secs = abs(s - secs);
+		int h = t.hrs;
+		int m = t.mins;
+		int s = t.secs;
+		h = abs(h - hrs);
+		m = abs(m - mins);
+		s = abs(s - secs);
+		t.hrs = h;
+		t.mins = m;
+		t.secs = s;
+		return t;
 	}
-	void ShiftBackTime(int h, int m, int s) // изменить на заданное значение //для вычитания
+	Time ShiftBackTime(Time t) // изменить на заданное значение //для вычитания
 	{
-		hrs = hrs - h;
-		mins = mins - m;
-		secs = secs - s;
-		hrs = 24 + (hrs % 24);
-		if ((hrs == 24) || (hrs == -24))
-			hrs = 0;
-		hrs = hrs + mins / 60;
-		if (mins != 0)
-			hrs--;
-		mins = 60 + (mins % 60);
-		if ((mins == 60) || (mins == -60))
-			mins = 0;
-		mins = mins + secs / 60;
-		if (secs != 0)
-			mins--;
-		s = 60 + (secs % 60);
-		if ((secs == 60) || (secs == -60))
-			secs = 0;
+		int h = t.hrs;
+		int m = t.mins;
+		int s = t.secs;
+		h = h - hrs;
+		m = m - mins;
+		s = s - secs;
+		h = 24 + (h % 24);
+		if ((h == 24) || (h == -24))
+			h = 0;
+		h = h + m / 60;
+		if (m != 0)
+			h--;
+		m = 60 + (m % 60);
+		if ((m == 60) || (m == -60))
+			m = 0;
+		m = m + s / 60;
+		if (s != 0)
+			m--;
+		s = 60 + (s % 60);
+		if ((s == 60) || (s == -60))
+			s = 0;
+		t.hrs = h;
+		t.mins = m;
+		t.secs = s;
+		return t;
 	}
-	void ShiftForwTime(int h, int m, int s) // изменить на заданное значение //для сложения
+	Time ShiftForwTime(Time t) // изменить на заданное значение //для сложения
 	{
-		hrs = hrs + h;
-		mins = mins + m;
-		secs = secs + s;
-		if (secs > 59)
+		int h = t.hrs;
+		int m = t.mins;
+		int s = t.secs;
+		h = hrs + h;
+		m = mins + m;
+		s = secs + s;
+		if (s > 59)
 		{
-			mins = mins + secs / 60;
-			secs = secs % 60;
+			m = m + s / 60;
+			s = s % 60;
 		}
-		if (mins > 59)
+		if (m > 59)
 		{
-			hrs = hrs + mins / 60;
-			mins = mins % 60;
+			h = h + m / 60;
+			m = m % 60;
 		}
-		if (hrs > 23)
-			hrs = hrs % 24;
+		if (h > 23)
+			h = h % 24;
+		t.hrs = h;
+		t.mins = m;
+		t.secs = s;
+		return t;
 	}
 
 };
@@ -87,7 +121,7 @@ void main()
 	int mode;
 	int add;
 	int i = 0;
-	Time t;
+	Time t1, t2, t3;
 	cout << "Time setted: 0 h 0 m 0 s.\n";
 	while (i == 0)
 	{
@@ -120,12 +154,12 @@ void main()
 				cin >> s;
 				cout << endl;
 			}
-			Time(h, m, s);
+			t1.SetTime(h, m, s);
 			break;
 		}
 		case 2:
 		{
-			t.PrintTime();
+			t1.PrintTime();
 			break;
 		}
 		case 3:
@@ -149,9 +183,10 @@ void main()
 				cin >> s;
 				cout << endl;
 			}
-			t.DiffTime(h, m, s);
+			t2.SetTime(h, m, s);
+			t3 = t1.DiffTime(t2);
 			cout << "The difference is: ";
-			t.PrintTime();
+			t3.PrintTime();
 			break;
 		}
 		case 4:
@@ -166,11 +201,13 @@ void main()
 			cout << endl;
 			cout << "Press 0 to add.\nPress 1 to subtract.\n";
 			cin >> add;
+			t2.SetTime(h, m, s);
 			if (add == 0)
-				t.ShiftForwTime(h, m, s);
-			else t.ShiftBackTime(h, m, s);
-			t.PrintTime();
+				t3 = t1.ShiftForwTime(t2);
+			else t3 = t1.ShiftBackTime(t2);
+			t3.PrintTime();
 			break;
+		}
 		}
 		cout << "Press 0 to continue\nPress 1 to exit\n";
 		cin >> i;
@@ -178,7 +215,6 @@ void main()
 		{
 			cout << "Press 0 to continue\nPress 1 to exit\n";
 			cin >> i;
-		}
 		}
 	}
 }
