@@ -51,7 +51,7 @@ public:
 		int s = t.secs;
 		h = hrs - h;
 		m = mins - m;
-		s = secs - s;		
+		s = secs - s;
 		if (h < 0)
 		{
 			h = 24 + (h % 24);
