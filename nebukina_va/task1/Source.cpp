@@ -49,9 +49,33 @@ public:
 		int h = t.hrs;
 		int m = t.mins;
 		int s = t.secs;
-		h = abs(h - hrs);
-		m = abs(m - mins);
-		s = abs(s - secs);
+		h = hrs - h;
+		m = mins - m;
+		s = secs - s;		
+		if (h < 0)
+		{
+			h = 24 + (h % 24);
+			if (h == -24)
+				h = 0;
+		}
+		if (m < 0)
+		{
+			h = h + m / 60;
+			if (m != 0)
+				h--;
+			m = 60 + (m % 60);
+			if (m == -60)
+				m = 0;
+		}
+		if (s < 0)
+		{
+			m = m + s / 60;
+			if (s != 0)
+				m--;
+			s = 60 + (s % 60);
+			if (s == -60)
+				s = 0;
+		}
 		t.hrs = h;
 		t.mins = m;
 		t.secs = s;
@@ -80,6 +104,9 @@ public:
 		s = 60 + (s % 60);
 		if ((s == 60) || (s == -60))
 			s = 0;
+		hrs = h;
+		mins = m;
+		secs = s;
 		t.hrs = h;
 		t.mins = m;
 		t.secs = s;
@@ -105,6 +132,9 @@ public:
 		}
 		if (h > 23)
 			h = h % 24;
+		hrs = h;
+		mins = m;
+		secs = s;
 		t.hrs = h;
 		t.mins = m;
 		t.secs = s;
