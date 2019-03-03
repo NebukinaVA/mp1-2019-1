@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cmath>
+#include <ctime>
 #include <iosfwd>
 
 using namespace std;
@@ -9,13 +10,14 @@ using namespace std;
 class Vector 
 {
 	int n;
-	int *vector = new int[n];
+	long int *vector = new long int[n];
 public:
 	Vector()
 	{
+		srand(time(NULL));
 		for (int i = 0; i < n; i++)
 		{
-			vector[i] = 0;
+			vector[i] = rand() % 2001 - 1000;
 		}
 	}
 	Vector(int _n)
@@ -39,19 +41,19 @@ public:
 		cout << "The size of the verctor is " << n << ".\n";
 		cout << endl;
 	}
-	void SetComp(int i, int a)
+	void SetComp(int i, long int a)
 	{
-		vector[i] = a;
+		vector[i-1] = a;
 	}
 	void GetComp(int i)
 	{
 		cout << "The " << i << " component of vector is ";
-		cout << vector[i] << ".\n";
+		cout << vector[i-1] << ".\n";
 		cout << endl;
 	}
 	void CalcLen()
 	{
-		double len = 0;
+		long double len = 0;
 		for (int i = 0; i < n; i++)
 		{
 			len = len + vector[i] * vector[i];
@@ -59,22 +61,26 @@ public:
 		len = sqrt(len);
 		cout << "The length is" << len << ".\n";
 	}
-	Vector ScalarComp(Vector v1, Vector v2)
+	long double ScalarComp(Vector v)
 	{
-		double scomp = 0;
+		long double scomp = 0;
 		for (int i = 0; i < n; i++)
 		{
-			scomp = scomp + v1.vector[i]*v2.vector[i];
+			scomp = scomp + vector[i] * v.vector[i];
 		}
 		return scomp;
 	}
-	Vector Sum(Vector v1, Vector v2)
+	Vector& operator+(const Vector &v) 
 	{
 		for (int i = 0; i < n; i++)
 		{
-			v1.vector[i] = v1.vector[i] + v2.vector[i];
+			v.vector[i] = vector[i] + v.vector[i];
 		}
-		return v1;
+		return *this;
+	}
+	~Vector()
+	{
+		delete[] vector;
 	}
 };
 
@@ -82,11 +88,12 @@ void main()
 {
 	int n = 1;
 	int mode = 0;
-	int i;
-	int comp;
+	int i, j;
+	long int comp;
 	int cycle = 0;
+	long double scalcompos;
 	Vector v1, v2, v3;
-	cout << "Default size - 0, default length - 0.\n";
+	cout << "Default size - 0, default length is random.\n";
 	while (cycle == 0)
 	{
 		do
@@ -105,8 +112,6 @@ void main()
 		{
 		case 1:
 		{
-			cout << "Enter the size of the vector from 1 to 20.\n";
-			cin >> n;
 			do
 			{
 				cout << "Enter the size of the vector from 1 to 20.\n";
@@ -140,25 +145,35 @@ void main()
 			break;
 		}
 		case 6:
-		{
+		{	
 			do
 			{
-				cout << "Enter the size of the vectors from 1 to 20.\n";
+				cout << "Enter the size of two vectors from 1 to 20.\n";
 				cin >> n;
 			} while ((n < 1) || (n > 20));
 			v1.SetSize(n);
 			v2.SetSize(n);
-
+			scalcompos = v2.ScalarComp(v1);
+			cout << "Scalar Composition: " << scalcompos << "\n";
+			break;
 		}
-
+		case 7:
+		{
+			do
+			{
+				cout << "Enter the size of two vectors from 1 to 20.\n";
+				cin >> n;
+			} while ((n < 1) || (n > 20));
+			v1.SetSize(n);
+			v2.SetSize(n);
+			v1 = v1 + v2;
+			cout << "The result of sum is a new vector. You can check components.\n";
 		}
-		mode = 0;
-		cout << "Press 0 to continue\nPress 1 to exit\n";
-		cin >> cycle;
-		while ((cycle < 0) || (cycle > 1))
+		}
+		do
 		{
 			cout << "Press 0 to continue\nPress 1 to exit\n";
 			cin >> cycle;
-		}
+		} while ((cycle < 0) || (cycle > 1));
 	}
 }
