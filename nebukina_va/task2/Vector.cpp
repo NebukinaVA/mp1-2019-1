@@ -10,22 +10,28 @@ using namespace std;
 class Vector 
 {
 	int n;
-	long int *vector = new long int[n];
+	long int *vector;
 public:
 	Vector()
 	{
-		srand(time(NULL));
+		long int *vector = new long int[n];
 		for (int i = 0; i < n; i++)
 		{
-			vector[i] = rand() % 2001 - 1000;
+			vector[i] = 0;
 		}
 	}
-	Vector(int _n)
+	Vector(int c)
 	{
-		n = _n;
+		long int *vector = new long int[n];
+		for (int i = 0; i < n; i++)
+		{
+			vector[i] = c;
+		}
 	}
 	Vector& operator=(const Vector &v)
 	{
+		delete[] vector;
+		vector = new long int[n];
 		for (int i = 0; i < n; i++)
 		{
 			vector[i] = v.vector[i];
@@ -34,24 +40,24 @@ public:
 	}
 	void SetSize(int size)
 	{
+		delete[] vector;
 		n = size;
+		vector = new long int[n];
+		Vector();
 	}
-	void GetSize()
+	int GetSize()
 	{
-		cout << "The size of the verctor is " << n << ".\n";
-		cout << endl;
+		return n;
 	}
 	void SetComp(int i, long int a)
 	{
-		vector[i-1] = a;
+		vector[i] = a;
 	}
-	void GetComp(int i)
+	long int GetComp(int i)
 	{
-		cout << "The " << i << " component of vector is ";
-		cout << vector[i-1] << ".\n";
-		cout << endl;
+		return vector[i];
 	}
-	void CalcLen()
+	long double CalcLen()
 	{
 		long double len = 0;
 		for (int i = 0; i < n; i++)
@@ -59,7 +65,7 @@ public:
 			len = len + vector[i] * vector[i];
 		}
 		len = sqrt(len);
-		cout << "The length is" << len << ".\n";
+		return len;
 	}
 	long double ScalarComp(Vector v)
 	{
@@ -86,14 +92,16 @@ public:
 
 void main()
 {
-	int n = 1;
+	int n;
 	int mode = 0;
 	int i, j;
 	long int comp;
 	int cycle = 0;
 	long double scalcompos;
-	Vector v1, v2, v3;
-	cout << "Default size - 0, default length is random.\n";
+	long double len;
+	int c = 1;
+	Vector v1, v2(c);
+	cout << "Default size - 0, default length - 0.\n";
 	while (cycle == 0)
 	{
 		do
@@ -121,7 +129,9 @@ void main()
 			break;
 		}
 		case 2:
-			v1.GetSize();
+			n = v1.GetSize();
+			cout << "The size of the verctor is " << n << ".\n";
+	     	cout << endl;
 			break;
 		case 3:
 		{
@@ -136,12 +146,15 @@ void main()
 		{
 			cout << "Enter the number of component from 1 to " << n << ".\n";
 			cin >> i;
-			v1.GetComp(i);
+			comp = v1.GetComp(i);	
+			cout << "The " << i << " component of vector is " << comp << ".\n";
+	    	cout << endl;
 			break;
 		}
 		case 5:
 		{
-			v1.CalcLen();
+			len = v1.CalcLen();
+			cout << "The length is " << len << ".\n";
 			break;
 		}
 		case 6:
@@ -153,6 +166,7 @@ void main()
 			} while ((n < 1) || (n > 20));
 			v1.SetSize(n);
 			v2.SetSize(n);
+			cout << "Default components of 2nd vector: " << c << ".\n";
 			scalcompos = v2.ScalarComp(v1);
 			cout << "Scalar Composition: " << scalcompos << "\n";
 			break;
@@ -166,6 +180,7 @@ void main()
 			} while ((n < 1) || (n > 20));
 			v1.SetSize(n);
 			v2.SetSize(n);
+			cout << "Default components of 2nd vector: " << c << ".\n";
 			v1 = v1 + v2;
 			cout << "The result of sum is a new vector. You can check components.\n";
 		}
