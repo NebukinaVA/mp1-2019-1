@@ -14,18 +14,16 @@ class Vector
 public:
 	Vector()
 	{
+		n = 0;
+		long int *vector = new long int[n];
+	}
+	Vector(int c)
+	{
+		n = c;
 		long int *vector = new long int[n];
 		for (int i = 0; i < n; i++)
 		{
 			vector[i] = 0;
-		}
-	}
-	Vector(int c)
-	{
-		long int *vector = new long int[n];
-		for (int i = 0; i < n; i++)
-		{
-			vector[i] = c;
 		}
 	}
 	Vector& operator=(const Vector &v)
@@ -43,7 +41,7 @@ public:
 		delete[] vector;
 		n = size;
 		vector = new long int[n];
-		Vector();
+		Vector(n);
 	}
 	int GetSize()
 	{
