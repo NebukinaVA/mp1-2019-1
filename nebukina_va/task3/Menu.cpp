@@ -28,7 +28,6 @@ public:
 	{
 		item = i;
 		command.reserve(item);
-		//	command.at(0) = '\0';
 	}
 	Menu(const Menu &m)
 	{
