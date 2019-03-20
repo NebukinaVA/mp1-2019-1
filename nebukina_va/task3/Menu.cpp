@@ -139,13 +139,13 @@ int main()
 			cout << "Enter the number of the option:";
 			cin >> opt;
 			opt = m.ChooseItem(opt);
-			cout << "You've chosen ¹" << opt << "\n";
+			cout << "You've chosen â„–" << opt << "\n";
 			break;
 		}
 		case 6:
 		{
 			last = m.GetItem();
-			cout << "The last one is " << last << ". (0 - if you haven't chosen any option.\n";
+			cout << "The last one is " << last << ". (0 - if you haven't chosen any option)\n";
 			break;
 		}
 		}
