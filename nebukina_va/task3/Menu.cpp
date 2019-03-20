@@ -38,7 +38,6 @@ public:
 	}
 	~Menu()
 	{
-		command.clear();
 	}
 	void SetSize(int size)
 	{
@@ -63,11 +62,11 @@ public:
 			cout << i + 1 << ") " << command.at(i) << "\n";
 		}
 	}
-	void ChooseItem(int n)
+	int ChooseItem(int n)
 	{
 		lastitem = n;
 		flag = true;
-		cout << "You've chosen " << n << ") " << command.at(n - 1) << "\n";
+		return n;
 	}
 	int GetItem() const
 	{
@@ -138,9 +137,10 @@ int main()
 		}
 		case 5:
 		{
-			cout << "Enter the number:";
+			cout << "Enter the number of the option:";
 			cin >> opt;
-			m.ChooseItem(opt);
+			opt = m.ChooseItem(opt);
+			cout << "You've chosen ¹" << opt << "\n";
 			break;
 		}
 		case 6:
