@@ -61,8 +61,11 @@ public:
 			cout << i + 1 << ") " << command.at(i) << "\n";
 		}
 	}
-	int ChooseItem(int n)
+	int ChooseItem()
 	{
+		int n;
+		cout << "Enter the number of the option:";
+		cin >> n;
 		lastitem = n;
 		flag = true;
 		return n;
@@ -136,9 +139,7 @@ int main()
 		}
 		case 5:
 		{
-			cout << "Enter the number of the option:";
-			cin >> opt;
-			opt = m.ChooseItem(opt);
+			opt = m.ChooseItem();
 			cout << "You've chosen ¹" << opt << "\n";
 			break;
 		}
