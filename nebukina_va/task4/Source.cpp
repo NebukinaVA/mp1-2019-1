@@ -1,47 +1,45 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <cstdio>
 #include <string>
 #include <vector>
 #include <clocale>
+#include "Song.h"
 
 using namespace std;
-/*
+
 void main()
 {
-    setlocale(LC_ALL, "Rus");
+	setlocale(LC_ALL, "Rus");
 	int n;
-	int number;
 	int mode = 0;
-	int i;
 	int cycle = 0;
-	string str[2];
-	string *pstr = str;
+	vector <string> getstr;
+	Song sin, sout;
 	Player p;
-	cout << "Default number of options - 1.\n";
+	cout << "0 песен в песеннке.\n";
 	while (cycle == 0)
 	{
 		do
 		{
-			cout << "\nWhat do you want to do?\n";
-			cout << "Press 1 to add a song.\n";
-			cout << "Press 2 to change chosen song's data.\n";
-			cout << "Press 3 to find the song.\n";
-			cout << "Press 4 to get all songs of chosen poet.\n";
-			cout << "Press 5 to get all songs of chosen composer.\n";
-			cout << "Press 6 to get all songs of chosen performer.\n";
-			cout << "Press 7 to get current number of songs.\n";
-			cout << "Press 8 to delete the song.\n";
-			cout << "Press 9 to save player in the file.\n";
-			cout << "Press 10 to get player from the file.\n";
+			cout << "\nВыберите действие:\n";
+			cout << "1 - добавить песню.\n";
+			cout << "2 - изменить данные песни.\n";
+			cout << "3 - найти песню по названию и исполнителю.\n";
+			cout << "4 - выдать все песни заданного поэта.\n";
+			cout << "5 - выдать все песни заданного композитора.\n";
+			cout << "6 - выдать все песни заданного исполнителя.\n";
+			cout << "7 - узнать текущее число песен.\n";
+			cout << "8 - удалить песню.\n";
+			cout << "9 - сохранить песенник в файл.\n";
+			cout << "10 - считать песенник из файла.\n";
 			cin >> mode;
 		} while ((mode < 1) || (mode > 10));
 		switch (mode)
 		{
 		case 1:
 		{
-			p.AddSong();
-			cout << "The song has been added.\n";
+			p.AddSong(sout);
+			cout << "Песня добавлениа.\n";
 			break;
 		}
 		case 2:
@@ -49,22 +47,36 @@ void main()
 			break;
 		case 3:
 		{
-			//	pstr = p.FindSong();
+			string str2, str1;
+			cout << "Название: ";
+			cin >> str1;
+			cout << "Исполнитель: ";
+			cin >> str2;
+            sin = p.FindSong(str1, str2);
 			break;
 		}
 		case 4:
 		{
-			p.GetPoet();
+			string str;
+			cout << "Введите имя поэта: ";
+			cin >> str;
+			getstr = p.GetPoet(str);
 			break;
 		}
 		case 5:
 		{
-			p.GetComposer();
+			string str;
+			cout << "Введите имя композитора: ";
+			cin >> str;
+			getstr = p.GetComposer(str);
 			break;
 		}
 		case 6:
 		{
-			p.GetPerformer();
+			string str;
+			cout << "Введите имя исполнителя: ";
+			cin >> str;
+			getstr = p.GetPerformer(str);
 			break;
 		}
 		case 7:
@@ -74,16 +86,34 @@ void main()
 		}
 		case 8:
 		{
-			p.DeleteSong();
+			string str2, str1;
+			cout << "Название: ";
+			cin >> str1;
+			cout << "Исполнитель: ";
+			cin >> str2;
+			p.DeleteSong(str1, str2);
 			break;
+		}
+		case 9:
+		{
+			string str;
+			cout << "Введите имя файла:";
+			cin >> str;
+			p.SaveToFile(str);
+		}
+		case 10:
+		{
+			Player pfile;
+			string str;
+			cout << "Введите имя файла:";
+			cin >> str;
+			pfile = p.GetFromFile(str);
 		}
 		}
 		do
 		{
-			cout << "Press 0 to continue\nPress 1 to exit\n";
+			cout << "0 - продолжить\n1 - выход\n";
 			cin >> cycle;
 		} while ((cycle < 0) || (cycle > 1));
 	}
-	delete[] str;
 }
-*/
