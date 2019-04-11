@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <clocale>
 #include "Song.h"
 
 using namespace std;
@@ -16,42 +17,60 @@ void Player::PrintList() const
 	}
 }
 
-void Player::OrderList() // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+int Player::OrderList(string str, int ind) 
 {
-	for (int i = playlist.size() - 1; i <= 0; i--)
+	if ((str[ind] >= 'А') && (str[ind] <= 'Я'))
 	{
-
-		for (int j = 0; j < playlist.max_size(); j++)
-		{
-			if (playlist.back[0] == playlist[i])
-				;
-		}
+		str[ind] = str[ind] + 32;
+		return 1;
 	}
+	else
+		return 0;
+
 }
 
 void Player::AddSong(Song s)
 {
-	playlist.push_back(s);
+//	playlist.push_back(s);
+	int length = playlist.size();
+	int len = s.info[0].length();
+	int *v = new int[len];
+	for (int i = 0; i < len; i++)
+		v[i] = OrderList(s.info[0], i);
+	int i = 0;
+	while ((i < length) && (s.info[0] <= playlist[i].info[0]))
+		i++;
+	length++;
+	playlist.resize(length);
+	for (int j = length - 1; j > i; j--)
+		playlist [j] = playlist[j - 1];
+	playlist[i] = s;
+	for (int j = 0; j < len; j++)
+	{
+		if (v[j] == 1)
+			playlist[i].info[0][j] =playlist[i].info[0][j] - 32;
+	}
+	delete[] v;
 }
 
 void Player::ChangeData()
 {
 	int i, n;
-	cout << "Choose a song:\n";
+	cout << "Выберите песню:\n";
 	PrintList();
 	cin >> i;
-	cout << "What do you want to change?";
+	cout << "Что Вы хотите изменить?";
 	cout << "1. " << DATA[0] << "\n2. " << DATA[1] << "\n3. " << DATA[2] << "\n4. " << DATA[3] << "\n5. " << DATA[4] << "\n6. " << DATA[5] << "\n";
 	cin >> n;
 	if (n == 6)
 	{
-		cout << "Enter day, month, year: ";
+		cout << "Введите день, месяц, год: ";
 		cin >> playlist.at(i - 1).day >> playlist.at(i - 1).month >> playlist.at(i - 1).year;
 	}
 	else
 	{
 		string str;
-		cout << "Enter " << DATA[n - 1] << ":";
+		cout << "Введите " << DATA[n - 1] << ":";
 		cin >> str;
 		playlist.at(i - 1).info[n - 1] = str;
 	}
@@ -59,54 +78,36 @@ void Player::ChangeData()
 
 void Player::DeleteSong(string str1, string str2)
 {
-	int ind;
 	for (int j = 0; j < playlist.size(); j++)
 	{
 		if (playlist.at(j).info[0] == str1)
 		{
 			if (playlist.at(j).info[3] == str2)
 			{
-				ind = j;
+				playlist.erase(playlist.begin() + j);
 				break;
 			}
 			else
-				throw (1); //!! no songs found
+				throw "Ничего не найдено.\n";
 		}
 	}
-	playlist.erase(playlist.begin() + ind);
 }
-Song Player::FindSong(string str1, string str2) //!!!!!!!!!!!!!!!!!!!!1
+Song Player::FindSong(string str1, string str2) 
 {
-/*	string str2, str1;
-	cout << "Enter name: ";
-	cin >> str1;
-	cout << "Enter performer: ";
-	cin >> str2; 
-*/
-	int ind;
 	vector <string> retstr(2);
 	for (int j = 0; j < playlist.size(); j++)
 	{
 		if (playlist.at(j).info[0] == str1)
 		{
 			if (playlist.at(j).info[3] == str2)
-			{
-				ind = j;
-				break;
-			}
-			else 
-				throw (1); //!! no songs found
+				return playlist.at(j);
+			else
+				throw "Ничего не найдено.\n";
 		}
 	}
-	return playlist.at(ind);
 }
 vector <string> Player::GetPoet(string str)
 {
-	/*
-	string str;
-	cout << "Enter name of the poet: ";
-	cin >> str;
-	*/
 	int count = 0;
 	for (int j = 0; j < playlist.size(); j++)
 	{
@@ -123,16 +124,12 @@ vector <string> Player::GetPoet(string str)
 			i++;
 		}
 		else
-			throw (1); //!! no songs found
+			throw "Ничего не найдено.\n";
 	}
 	return retstr;
 }
 vector <string> Player::GetComposer(string str)
 {
-	/*
-	string str;
-	cout << "Enter name of the composer: ";
-	cin >> str;*/
 	int count = 0;
 	for (int j = 0; j < playlist.size(); j++)
 	{
@@ -149,16 +146,12 @@ vector <string> Player::GetComposer(string str)
 			i++;
 		}
 		else
-			throw (1); //!! no songs found
+			throw "Ничего не найдено.\n";
 	}
 	return retstr;
 }
 vector <string> Player::GetPerformer(string str)
 {
-	/*
-	string str;
-	cout << "Enter name of the performer: ";
-	cin >> str;*/
 	int count = 0;
 	for (int j = 0; j < playlist.size(); j++)
 	{
@@ -175,7 +168,7 @@ vector <string> Player::GetPerformer(string str)
 			i++;
 		}
 		else
-			throw (1); //!! no songs found
+			throw "Ничего не найдено.\n";
 	}
 	return retstr;
 }
@@ -205,19 +198,26 @@ Player Player::GetFromFile(string str)
 	int i = 0;
 	file.open(str + ".txt");
 	Player FileList;
-	string songinfo[5];
-	int y, m, d;
+	Song s;
 	while (!file.eof())
 	{
-		file >> songinfo[0];
-		file >> songinfo[1];
-		file >> songinfo[2];
-		file >> songinfo[3];
-		file >> songinfo[4];
-		file >> d >> m >> y;
-		playlist.push_back(songinfo);
+		file >> s.info[0];
+		file >> s.info[1];
+		file >> s.info[2];
+		file >> s.info[3];
+		file >> s.info[4];
+		file >> s.day >> s.month >> s.year;
+		playlist.push_back(s);
 		i++;
 	}
 	file.close();
-	return songinfo;
+	return FileList;
+}
+
+Player& Player::operator=(const Player &p)
+{
+	playlist.clear();
+	playlist.reserve(p.playlist.size());
+	playlist = p.playlist;
+	return *this;
 }
