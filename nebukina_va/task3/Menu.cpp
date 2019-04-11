@@ -24,10 +24,9 @@ class Menu
 		SetConsoleCursorPosition(Console, pos);
 	}
 public:
-	Menu(int i = 1)
+	Menu(int i = 0)
 	{
 		item = i;
-		command.reserve(item);
 	}
 	Menu(const Menu &m)
 	{
@@ -41,7 +40,7 @@ public:
 	void SetSize(int size)
 	{
 		item = size;
-		command.reserve(item);
+		command.resize(item);
 		Menu(item);
 	}
 	int GetSize() const
@@ -133,21 +132,14 @@ int main()
 		case 4:
 		{
 			cout << "Enter coordinates:";
-			cin >> x, y;
+			cin >> x >> y;
 			m.GetMenu(x, y);
 			break;
 		}
 		case 5:
 		{
-<<<<<<< HEAD
 			opt = m.ChooseItem();
 			cout << "You've chosen ¹" << opt << "\n";
-=======
-			cout << "Enter the number of the option:";
-			cin >> opt;
-			opt = m.ChooseItem(opt);
-			cout << "You've chosen â„–" << opt << "\n";
->>>>>>> bad613e0ba556c52510451c296bd8aec28a0f039
 			break;
 		}
 		case 6:
