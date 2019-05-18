@@ -12,20 +12,18 @@ class Methods
 {
 	int size;
 	int numb;
-	int bull = 0;
-	int cow = 0;
+	int bull;
+	int cow;
 	vector <int> number;
 	vector <int> comp;
 	int attempt = 0;
 public:
-	Methods() 
+	Methods()
 	{
 	}
 	Methods(int n)
 	{
 		size = n;
-		number.reserve(size);
-		comp.reserve(size);
 	}
 	void ChangeSize(int _size)
 	{
@@ -36,15 +34,16 @@ public:
 		srand(time(NULL));
 		for (int i = 0; i < size; i++)
 		{
-			comp[i] = (rand() % 9 + 1);
+			comp.push_back(rand() % 9 + 1);
 			for (int j = 0; j < i; j++)
 			{
 				while (comp[i] == comp[j])
 				{
-					comp[i] = (rand() % 9 + 1);
+					comp.push_back(rand() % 9 + 1);
 				}
 			}
 		}
+		cout << comp[0] << comp[1] << comp[2] << "made up number\n";
 	}
 	void GetNumber(int n) //число игрока
 	{
@@ -57,15 +56,17 @@ public:
 	void SplitNumber(int _numb) // разбить число игрока на разряды
 	{
 		int a = _numb;
-		for (int i = number.size() - 1; i >= 0; i--)
+		number.clear();
+		for (int i = size - 1; i >= 0; i--)
 		{
 			int d = pow(10, i);
-			number[i] = a / d;
+			number.push_back(a / d);
 			a %= d;
 		}
 	}
 	int CountBulls()
 	{
+		bull = 0;
 		SplitNumber(numb);
 		for (int i = 0; i < size; i++)
 		{
@@ -76,6 +77,7 @@ public:
 	}
 	int CountCows()
 	{
+		cow = 0;
 		SplitNumber(numb);
 		for (int i = 0; i < size; i++)
 		{
@@ -91,12 +93,17 @@ public:
 	{
 		attempt++;
 	}
+	int ReturnAttempts()
+	{
+		return attempt;
+	}
 };
 
-class BullsAndCows: public Methods
+class BullsAndCows : public Methods
 {
 	int size;
-//	Methods game = Methods(n);
+	int numb;
+	bool cycle = true;
 public:
 	BullsAndCows()
 	{
@@ -110,8 +117,7 @@ public:
 	}
 	void EnterNumber()
 	{
-		bool flag = true;
-		int numb;
+		bool flag = true;		
 		while (flag)
 		{
 			cout << "Enter your number: ";
@@ -124,7 +130,7 @@ public:
 			{
 				for (int j = 0; j < size; j++)
 				{
-					if ((i = j) && (points[i] == points[j]))
+					if ((i != j) && (points[i] == points[j]))
 					{
 						flag = true;
 						cout << "Digits match.\n";
@@ -133,8 +139,7 @@ public:
 				}
 			}
 		}
-	    GetNumber(numb);
-		SplitNumber(numb);
+		GetNumber(numb);
 	}
 	void PrintResult()
 	{
@@ -143,13 +148,34 @@ public:
 		if (bull == size)
 		{
 			cout << "Congrats! The made-up number is:" << numb << endl;
+			cycle = false;
 		}
 		cout << "Bulls: " << bull << "   Cows: " << cow << endl;
 	}
 	void GamingProcess()
 	{
 		GetSize();
-		EnterNumber();
-
+		CreateNumber();
+		while (cycle)
+		{
+			EnterNumber();
+			PrintResult();
+			Attempts();
+		}
+		int att = ReturnAttempts();
+		cout << "Number of attempts: " << att << endl;
+		cout << "The end!!!" << endl;
 	}
 };
+
+void main()
+{
+	BullsAndCows game;
+	int cycle = 1;
+	while (cycle)
+	{
+		game.GamingProcess();
+		cout << "1 - new game\n0 - exit\n";
+		cin >> cycle;
+	}
+}
