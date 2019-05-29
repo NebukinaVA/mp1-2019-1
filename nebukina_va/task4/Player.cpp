@@ -17,7 +17,7 @@ void Player::PrintList() const
 	}
 }
 
-int Player::OrderList(string str, int ind) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+int Player::OrderList(string str, int ind) //!
 {
 	if ((str[ind] >= 'À') && (str[ind] <= 'ß'))
 	{
@@ -92,7 +92,7 @@ void Player::DeleteSong(string str1, string str2)
 		}
 	}
 }
-Song Player::FindSong(string str1, string str2) //!!!!!!!!!!!!!!!!!!!!1
+Song Player::FindSong(string str1, string str2) //!!!
 {
 	vector <string> retstr(2);
 	for (int j = 0; j < playlist.size(); j++)

@@ -140,7 +140,6 @@ public:
 			}
 		}
 		GetNumber(numb);
-		//SplitNumber(numb);
 	}
 	void PrintResult()
 	{
