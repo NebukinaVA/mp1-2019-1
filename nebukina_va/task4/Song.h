@@ -3,16 +3,12 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <clocale>
 
 using namespace std;
 
 struct Song
 {
-	string name;
-	string poet;
-	string composer;
-	string performer;
-	string album;
 	string info[5];
 	int day, month, year;
 };
@@ -20,9 +16,8 @@ struct Song
 class Player
 {
 	vector <Song> playlist;
-	vector <int> iSongsByName;
-	const string DATA[6] = { "Name", "Poet", "Composer", "Performer", "Album", "Date" };
-	void OrderList();
+	const string DATA[6] = { "Название", "Поэт", "Композитор", "Исполнитель", "Альбом", "Дата" };
+	int OrderList(string str, int ind);
 	void PrintList() const;
 public:
 	Player()
@@ -30,8 +25,6 @@ public:
 	}
 	~Player()
 	{
-		playlist.clear();
-		iSongsByName.clear();
 	}
 	void AddSong(Song s);
 	void ChangeData();
@@ -43,4 +36,5 @@ public:
 	void DeleteSong(string str1, string str2);
 	void SaveToFile(string str);
 	Player GetFromFile(string str);
+	Player& operator= (const Player &p);
 };

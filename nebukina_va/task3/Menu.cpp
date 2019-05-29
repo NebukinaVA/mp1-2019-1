@@ -139,7 +139,11 @@ int main()
 		case 5:
 		{
 			opt = m.ChooseItem();
+<<<<<<< HEAD
 			cout << "You've chosen ¹" << opt << "\n";
+=======
+			cout << "You've chosen â„–" << opt << "\n";
+>>>>>>> 37eafff9115388e7b9bad895a44fbd102129e8d2
 			break;
 		}
 		case 6:
