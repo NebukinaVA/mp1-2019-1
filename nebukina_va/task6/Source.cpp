@@ -18,11 +18,10 @@ class Methods
 	vector <int> number;
 	vector <int> comp;
 	int attempt = 0;
-//	srand(time(NULL));
-	srand(0);
 public:
 	Methods()
 	{
+		srand(time(NULL));
 	}
 	Methods(int n)
 	{
@@ -36,12 +35,16 @@ public:
 	{
 		for (int i = 0; i < size; i++)
 		{
-			comp.push_back(rand() % 9 + 1);
+			if (i != 0)
+				comp.push_back(rand() % 10);
+			else comp.push_back(rand() % 9 + 1);
 			for (int j = 0; j < i; j++)
 			{
 				while (comp[i] == comp[j])
 				{
-					comp.push_back(rand() % 9 + 1);
+					if (i != 0)
+						comp.push_back(rand() % 10);
+					else comp.push_back(rand() % 9 + 1);
 				}
 			}
 		}

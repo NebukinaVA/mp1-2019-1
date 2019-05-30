@@ -175,7 +175,7 @@ public:
 
 class ATM
 {
-	Center cent;
+	static Center &cent;
 	Client cl;
 	Cassette cas;
 	int ind;
@@ -184,6 +184,10 @@ class ATM
 public:
 	ATM()
 	{
+	}
+	static void ConnectCent(Center _cent)
+	{
+		cent = _cent;
 	}
 	void GetCard(int cardnumb)
 	{
@@ -278,7 +282,9 @@ public:
 
 void main()
 {
+	Center cent;
 	ATM bank;
+	bank.ConnectCent(cent);
 	long int mycash;
 	int card;
 	Client c;
