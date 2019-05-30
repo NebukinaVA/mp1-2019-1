@@ -1,10 +1,11 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include <cstdio>
 #include <string>
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <cstdio>
 #include <ctime>
+#include <cstdlib>
 
 using namespace std;
 
@@ -17,6 +18,8 @@ class Methods
 	vector <int> number;
 	vector <int> comp;
 	int attempt = 0;
+//	srand(time(NULL));
+	srand(0);
 public:
 	Methods()
 	{
@@ -31,7 +34,6 @@ public:
 	}
 	void CreateNumber() // число компьютера
 	{
-		srand(time(NULL));
 		for (int i = 0; i < size; i++)
 		{
 			comp.push_back(rand() % 9 + 1);
@@ -43,7 +45,7 @@ public:
 				}
 			}
 		}
-		cout << comp[0] << comp[1] << comp[2] << "made up number\n";
+	//	cout << comp[0] << comp[1] << comp[2] << "made up number\n";
 	}
 	void GetNumber(int n) //число игрока
 	{
